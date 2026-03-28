@@ -6,7 +6,6 @@ C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\bin\Debug\net10.0\A
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\bin\Debug\net10.0\Api_Eden.runtimeconfig.json
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\bin\Debug\net10.0\Api_Eden.dll
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\bin\Debug\net10.0\Api_Eden.pdb
-C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\bin\Debug\net10.0\Microsoft.OpenApi.dll
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\obj\Debug\net10.0\Api_Eden.csproj.AssemblyReference.cache
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\obj\Debug\net10.0\rpswa.dswa.cache.json
@@ -122,4 +121,13 @@ C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\bin\Debug\net10.0\r
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\obj\Debug\net10.0\Api_Eden.sourcelink.json
+C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_eden\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_eden\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_eden\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_eden\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_eden\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_eden\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_eden\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_eden\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

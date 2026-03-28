@@ -20,6 +20,95 @@
     ]
   },
   {
+    "ContainingType": "Api_Eden.Controllers.AnimalController",
+    "Method": "PostAnimal",
+    "RelativePath": "api/Animal",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Api_Eden.DTOs.CrearAnimalDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Api_Eden.DTOs.AnimalDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.AnimalController",
+    "Method": "GetAnimal",
+    "RelativePath": "api/Animal/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Api_Eden.DTOs.AnimalDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.AnimalController",
+    "Method": "PutAnimal",
+    "RelativePath": "api/Animal/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "Api_Eden.DTOs.CrearAnimalDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.AnimalController",
+    "Method": "DeleteAnimal",
+    "RelativePath": "api/Animal/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Api_Eden.Controllers.WeatherForecastController",
     "Method": "Get",
     "RelativePath": "WeatherForecast",

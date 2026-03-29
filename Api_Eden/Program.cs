@@ -1,4 +1,5 @@
 using Api_Eden.Models;
+using Api_Eden.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -44,6 +45,8 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
+builder.Services.AddScoped<AnimalService>();
 
 // 3. Base de Datos MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>

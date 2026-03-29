@@ -1,15 +1,17 @@
-﻿using Api_Eden.DTOs;
+﻿
+using Api_Eden.DTOs.AnimalCreadoDto;
 using Api_Eden.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
 
 //Nota  : Este controlador se centra exclusivamente en la gestión de animales, incluyendo operaciones CRUD (Crear, Leer, Actualizar, Eliminar). No incluye funcionalidades relacionadas con adopciones, alimentos o usuarios, que deberían manejarse en controladores separados para mantener una arquitectura limpia y modular.
 //Nota2: Aunque cree las autenticaciones de seguridad,no las implementé en este controlador para facilitar las pruebas iniciales. Sin embargo, en un entorno de producción, se recomienda proteger estos endpoints con autenticación y autorización adecuadas para garantizar la seguridad de los datos y las operaciones.
 
 namespace Api_Eden.Controllers
 {
+
+
     [ApiController]
     [Route("api/[controller]")]
     public class AnimalController : ControllerBase
@@ -23,7 +25,7 @@ namespace Api_Eden.Controllers
 
         // GET: api/animal
         [HttpGet]
-       
+        [Authorize(Roles = "Administrador,Veterinario")]
         public async Task<ActionResult<IEnumerable<AnimalDTO>>> GetAnimales()
         {
             try
@@ -50,7 +52,7 @@ namespace Api_Eden.Controllers
 
         // GET: api/animal  **OBTENER UN ANIMAL POR ID**
         [HttpGet("{id}")]
-        
+        [Authorize(Roles = "Administrador,Veterinario,Trabajador")]
         public async Task<ActionResult<AnimalDTO>> GetAnimal(int id)
         {
             try
@@ -80,8 +82,8 @@ namespace Api_Eden.Controllers
         }
 
         //Post : api/animal  **CREAR UN NUEVO ANIMAL**
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
-       
         public async Task<ActionResult<AnimalDTO>> PostAnimal([FromBody] CrearAnimalDto dto
             )
         {
@@ -135,6 +137,7 @@ namespace Api_Eden.Controllers
 
         //put : api/animal/{id}  **ACTUALIZAR UN ANIMAL EXISTENTE**
 
+        [Authorize(Roles = "Administrador")]
         [HttpPut("{id}")]
 
         public async Task<ActionResult> PutAnimal(int id, [FromBody] CrearAnimalDto dto)
@@ -174,7 +177,7 @@ namespace Api_Eden.Controllers
         }
 
         //Delete : api/animal/{id}  **ELIMINAR UN ANIMAL**
-
+        [Authorize(Roles = "Administrador")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAnimal(int id)
         {

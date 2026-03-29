@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "KTmSLRS8apU=",
+  "dgSpecHash": "jiodJlTc3xo=",
   "success": true,
   "projectFilePath": "C:\\Users\\Reimy R Mateo Montas\\source\\repos\\Api_Eden\\Api_Eden\\Api_Eden.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Reimy R Mateo Montas\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
     "C:\\Users\\Reimy R Mateo Montas\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Reimy R Mateo Montas\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\9.0.0\\microsoft.aspnetcore.authentication.jwtbearer.9.0.0.nupkg.sha512",
     "C:\\Users\\Reimy R Mateo Montas\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",

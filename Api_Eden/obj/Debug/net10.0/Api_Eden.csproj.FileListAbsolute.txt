@@ -130,4 +130,5 @@ C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_eden\bin\Debug\net10.0\M
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_eden\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_eden\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_eden\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\bin\Debug\net10.0\BCrypt.Net-Next.dll
 C:\Users\Reimy R Mateo Montas\source\repos\Api_Eden\Api_Eden\obj\Debug\net10.0\staticwebassets.upToDateCheck.txt

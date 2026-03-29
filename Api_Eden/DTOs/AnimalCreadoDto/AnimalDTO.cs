@@ -1,4 +1,6 @@
-﻿namespace Api_Eden.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Api_Eden.DTOs.AnimalCreadoDto
 {
     public class AnimalDTO
     {

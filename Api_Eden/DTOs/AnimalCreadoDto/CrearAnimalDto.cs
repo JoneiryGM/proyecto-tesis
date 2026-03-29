@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Api_Eden.DTOs
+namespace Api_Eden.DTOs.AnimalCreadoDto
 {
     public class CrearAnimalDto
     {

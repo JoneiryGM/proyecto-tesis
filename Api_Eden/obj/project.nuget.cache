@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "lzOR5RcgVNM=",
+  "dgSpecHash": "U8eA/i247f4=",
   "success": true,
   "projectFilePath": "C:\\Users\\Joneiry Guzman\\Desktop\\Tesis_Project\\proyecto-tesis\\Api_Eden\\Api_Eden.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Joneiry Guzman\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512",
     "C:\\Users\\Joneiry Guzman\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\Joneiry Guzman\\.nuget\\packages\\mapster\\10.0.6\\mapster.10.0.6.nupkg.sha512",
+    "C:\\Users\\Joneiry Guzman\\.nuget\\packages\\mapster.core\\10.0.6\\mapster.core.10.0.6.nupkg.sha512",
     "C:\\Users\\Joneiry Guzman\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\9.0.0\\microsoft.aspnetcore.authentication.jwtbearer.9.0.0.nupkg.sha512",
     "C:\\Users\\Joneiry Guzman\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",
     "C:\\Users\\Joneiry Guzman\\.nuget\\packages\\microsoft.build.framework\\17.8.3\\microsoft.build.framework.17.8.3.nupkg.sha512",

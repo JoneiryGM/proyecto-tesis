@@ -28,6 +28,27 @@
           }
         }
       },
+      "Mapster/10.0.6": {
+        "type": "package",
+        "dependencies": {
+          "Mapster.Core": "10.0.6"
+        },
+        "compile": {
+          "lib/net9.0/Mapster.dll": {}
+        },
+        "runtime": {
+          "lib/net9.0/Mapster.dll": {}
+        }
+      },
+      "Mapster.Core/10.0.6": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Mapster.Core.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Mapster.Core.dll": {}
+        }
+      },
       "Microsoft.AspNetCore.Authentication.JwtBearer/9.0.0": {
         "type": "package",
         "dependencies": {
@@ -1199,6 +1220,35 @@
         "lib/netstandard2.0/Humanizer.dll",
         "lib/netstandard2.0/Humanizer.xml",
         "logo.png"
+      ]
+    },
+    "Mapster/10.0.6": {
+      "sha512": "wFNXuXzxPzJbpHEVnhx0m0YZwWcE2MPhtcifZ9QM1hvRsv86mBsQkXio74oNQDb7Wa96ThKuUjqYU3mSTMip1w==",
+      "type": "package",
+      "path": "mapster/10.0.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/net10.0/Mapster.dll",
+        "lib/net8.0/Mapster.dll",
+        "lib/net9.0/Mapster.dll",
+        "lib/netstandard2.0/Mapster.dll",
+        "mapster.10.0.6.nupkg.sha512",
+        "mapster.nuspec"
+      ]
+    },
+    "Mapster.Core/10.0.6": {
+      "sha512": "GzYLzCJBGcnHCU5zh2665uqHb2y2E9d1sWIIIu/K7nK9xU8NQH3hGCYp5pySMdwhJZS1+d7KAOIsrqLBh550EA==",
+      "type": "package",
+      "path": "mapster.core/10.0.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/netstandard2.0/Mapster.Core.dll",
+        "mapster.core.10.0.6.nupkg.sha512",
+        "mapster.core.nuspec"
       ]
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/9.0.0": {
@@ -3609,6 +3659,7 @@
   "projectFileDependencyGroups": {
     "net9.0": [
       "BCrypt.Net-Next >= 4.1.0",
+      "Mapster >= 10.0.6",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 9.0.0",
       "Microsoft.EntityFrameworkCore >= 9.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.0",
@@ -3663,6 +3714,10 @@
           "BCrypt.Net-Next": {
             "target": "Package",
             "version": "[4.1.0, )"
+          },
+          "Mapster": {
+            "target": "Package",
+            "version": "[10.0.6, )"
           },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",

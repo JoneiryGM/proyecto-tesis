@@ -48,6 +48,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<AnimalService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<ZoneService>();
 
 // 3. Base de Datos MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>

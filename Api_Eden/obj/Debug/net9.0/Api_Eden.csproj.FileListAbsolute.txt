@@ -130,3 +130,5 @@ C:\Users\Joneiry Guzman\Desktop\Tesis_Project\proyecto-tesis\Api_Eden\obj\Debug\
 C:\Users\Joneiry Guzman\Desktop\Tesis_Project\proyecto-tesis\Api_Eden\obj\Debug\net9.0\Api_Eden.pdb
 C:\Users\Joneiry Guzman\Desktop\Tesis_Project\proyecto-tesis\Api_Eden\obj\Debug\net9.0\Api_Eden.genruntimeconfig.cache
 C:\Users\Joneiry Guzman\Desktop\Tesis_Project\proyecto-tesis\Api_Eden\obj\Debug\net9.0\ref\Api_Eden.dll
+C:\Users\Joneiry Guzman\Desktop\Tesis_Project\proyecto-tesis\Api_Eden\bin\Debug\net9.0\Mapster.dll
+C:\Users\Joneiry Guzman\Desktop\Tesis_Project\proyecto-tesis\Api_Eden\bin\Debug\net9.0\Mapster.Core.dll

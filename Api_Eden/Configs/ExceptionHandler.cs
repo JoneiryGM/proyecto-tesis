@@ -23,11 +23,22 @@ public class ExceptionHandler : IExceptionHandler
         _logger.LogError(exception, "Ocurrió un error no controlado: {Message}", exception.Message);
 
         // Personalizamos la respuesta según el tipo de excepción
+        // var (statusCode, title) = exception switch
+        // {
+        //     ArgumentException => (StatusCodes.Status400BadRequest, "Petición incorrecta (Validación)"),
+        //     UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "No autorizado"),
+        //     _ => (StatusCodes.Status500InternalServerError, "Error interno del servidor")
+        // };
+
         var (statusCode, title) = exception switch
         {
-            ArgumentException => (StatusCodes.Status400BadRequest, "Petición incorrecta (Validación)"),
-            UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "No autorizado"),
-            _ => (StatusCodes.Status500InternalServerError, "Error interno del servidor")
+            ArgumentException        => (400, "Petición incorrecta (Validación)"),
+            UnauthorizedAccessException => (401, "No autorizado"),
+            KeyNotFoundException      => (404, "Recurso no encontrado"),
+            InvalidOperationException => (409, "Operación no permitida"),
+            NotImplementedException   => (501, "Funcionalidad no implementada"),
+            TimeoutException          => (408, "Tiempo de espera agotado"),
+            _                         => (500, "Error interno del servidor")
         };
 
         var problemDetails = new ProblemDetails

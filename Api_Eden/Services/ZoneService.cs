@@ -45,7 +45,7 @@ public class ZoneService
         }
 
         var newZone = dto.Adapt<Zona>();
-        newZone.FechaCreacion = DateTime.UtcNow;
+        newZone.FechaCreacion = DateTime.Now;
 
         _context.Zonas.Add(newZone);
         await _context.SaveChangesAsync();

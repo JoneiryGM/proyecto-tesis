@@ -44,10 +44,10 @@ public class ZoneController : ControllerBase
 }
 
 // TODO: agregar validaciones con el token
+
 // TODO: validar el tema del error handling, para que se
 // maneje desde el servicio y no desde el controlador, y 
 // así evitar repetir código en cada controlador.
 
-// TODO: validar los metodos, delete, update, create.
 
 // TODO: agregar los test unitarios para el servicio y el controlador.

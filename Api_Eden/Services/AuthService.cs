@@ -1,3 +1,4 @@
+using Api_Eden.Data;
 using Api_Eden.DTOs.AuthDto;
 using Api_Eden.Models;
 using Microsoft.EntityFrameworkCore;

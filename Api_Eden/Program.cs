@@ -1,12 +1,15 @@
+using Api_Eden.Configs;
+using Api_Eden.Data;
 using Api_Eden.Models;
 using Api_Eden.Services;
+using Api_Eden.Services.TratamientoService;
+using Api_Eden.Services.TratamientoService.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Api_Eden.Configs;
 using System.Text;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +75,10 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<AnimalService>();
 builder.Services.AddScoped<AuthService>();
+// Services médicos
+builder.Services.AddScoped<IFallecimientoService, FallecimientoService>();
+builder.Services.AddScoped<ITratamientoService, TratamientoService>();
+builder.Services.AddScoped<IVacunaService, VacunaService>();
 builder.Services.AddScoped<ZoneService>();
 
 // 3. Base de Datos MySQL

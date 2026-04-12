@@ -1,5 +1,6 @@
 namespace Api_Eden.Services;
 
+using Api_Eden.Data;
 using Api_Eden.DTOs.Zone.Request;
 using Api_Eden.DTOs.Zone.Response;
 using Api_Eden.Models;

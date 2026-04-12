@@ -1,11 +1,17 @@
 using Api_Eden.Models;
+using Api_Eden.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Api_Eden.Configs;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddExceptionHandler<ExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 // 1. Controladores
 builder.Services.AddControllers()
@@ -13,6 +19,25 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.ReferenceHandler =
             System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    })
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.InvalidModelStateResponseFactory = context =>
+        {
+            var errores = context.ModelState
+                .Where(e => e.Value?.Errors.Count > 0)
+                .SelectMany(e => e.Value!.Errors.Select(x => x.ErrorMessage))
+                .ToList();
+
+            var respuesta = new
+            {
+                status = 400,
+                mensaje = "Error de validación",
+                errores
+            };
+
+            return new BadRequestObjectResult(respuesta);
+        };
     });
 
 // 2. Swagger 
@@ -44,6 +69,10 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
+builder.Services.AddScoped<AnimalService>();
+builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<ZoneService>();
 
 // 3. Base de Datos MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -84,5 +113,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseExceptionHandler();
 
 app.Run();

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>a6fbe4ad-bcb4-431b-9a74-efa30bc65191</UserSecretsId>
@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
+    <PackageReference Include="Mapster" Version="10.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">

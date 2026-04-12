@@ -1,5 +1,6 @@
-namespace Api_Eden.Services;
+﻿namespace Api_Eden.Services;
 
+using Api_Eden.Data;
 using Api_Eden.DTOs.AnimalCreadoDto;
 using Api_Eden.Models;
 using Microsoft.EntityFrameworkCore;

@@ -1,8 +1,10 @@
 namespace Api_Eden.Controllers;
 
-using Api_Eden.DTOs.Zone.Request;
-using Api_Eden.DTOs.Zone.Response;
-using Api_Eden.Services;
+
+using global::Api_Eden.DTOs.Zone.Request;
+using global::Api_Eden.DTOs.Zone.Response;
+using global::Api_Eden.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -11,36 +13,106 @@ public class ZoneController : ControllerBase
 {
     private readonly ZoneService _zoneService;
 
-    public ZoneController(ZoneService zoneService)
+    public ZoneController(ZoneService zoneService) => _zoneService = zoneService;
+
+    [Authorize]
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<ZoneResponseDto>>> GetAll()
     {
-        _zoneService = zoneService;
+        try
+        {
+            return Ok(await _zoneService.GetAllAsync());
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { mensaje = "Error al obtener zonas", error = ex.Message });
+        }
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<ZoneResponseDto>>> GetAll() => 
-        Ok(await _zoneService.GetAllAsync());
-
-
+    [Authorize]
     [HttpGet("{id}")]
-    public async Task<ActionResult<ZoneResponseDto>> GetById(int id) =>
-        await _zoneService.GetByIdAsync(id) is ZoneResponseDto zone ? Ok(zone) : NotFound();
+    public async Task<ActionResult<ZoneResponseDto>> GetById(int id)
+    {
+        try
+        {
+            return Ok(await _zoneService.GetByIdAsync(id));
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { mensaje = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { mensaje = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { mensaje = "Error al obtener zona", error = ex.Message });
+        }
+    }
 
-
+    [Authorize(Roles = "Administrador")]
     [HttpPost]
-    public async Task<ActionResult<ZoneResponseDto>> Create([FromBody] CreateZoneDto dto) =>
-        await _zoneService.CreateAsync(dto) is ZoneResponseDto zone 
-            ? CreatedAtAction(nameof(GetById), new { id = zone.Id }, zone) 
-            : BadRequest();
+    public async Task<ActionResult<ZoneResponseDto>> Create([FromBody] CreateZoneDto dto)
+    {
+        try
+        {
+            var zone = await _zoneService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = zone.Id }, zone);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { mensaje = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { mensaje = "Error al crear zona", error = ex.Message });
+        }
+    }
 
-
+    [Authorize(Roles = "Administrador")]
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] CreateZoneDto dto) =>
-        await _zoneService.UpdateAsync(id, dto) ? NoContent() : NotFound();
+    public async Task<IActionResult> Update(int id, [FromBody] CreateZoneDto dto)
+    {
+        try
+        {
+            var updated = await _zoneService.UpdateAsync(id, dto);
+            if (!updated) return NotFound(new { mensaje = $"No existe una zona con ID {id}." });
+            return NoContent();
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { mensaje = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { mensaje = "Error al actualizar zona", error = ex.Message });
+        }
+    }
 
-
+    [Authorize(Roles = "Administrador")]
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id) => 
-        await _zoneService.DeleteAsync(id) ? NoContent() : NotFound();
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            var deleted = await _zoneService.DeleteAsync(id);
+            if (!deleted) return NotFound(new { mensaje = $"No existe una zona con ID {id}." });
+            return NoContent();
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { mensaje = ex.Message });
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { mensaje = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { mensaje = "Error al eliminar zona", error = ex.Message });
+        }
+    }
 }
 
 // TODO: agregar validaciones con el token

@@ -115,7 +115,6 @@ public class ZoneController : ControllerBase
     }
 }
 
-// TODO: agregar validaciones con el token
+// TODO: agregar validaciones y agregue el try catch a cada método, para manejar errores de forma centralizada y evitar que el servidor devuelva errores 500 sin control.
 
 
-// TODO: agregar los test unitarios para el servicio y el controlador.

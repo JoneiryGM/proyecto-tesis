@@ -46,7 +46,8 @@ namespace Api_Eden.Services.TratamientoService
 
             _db.Tratamientos.Add(tratamiento);
 
-            // Lógica de negocio — actualizar estado de salud del animal
+            // Lógica de negocio —
+            // actualizar estado de salud del animal
             _db.Entry(animal).State = EntityState.Detached;
             var animalFresh = await _db.Animales.FindAsync(historial.AnimalId);
             if (animalFresh is not null)

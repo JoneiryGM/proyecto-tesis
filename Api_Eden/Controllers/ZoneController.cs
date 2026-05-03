@@ -1,6 +1,5 @@
 namespace Api_Eden.Controllers;
 
-
 using global::Api_Eden.DTOs.Zone.Request;
 using global::Api_Eden.DTOs.Zone.Response;
 using global::Api_Eden.Services;
@@ -19,36 +18,75 @@ public class ZoneController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ZoneResponseDto>>> GetAll()
     {
-        try
-        {
-            return Ok(await _zoneService.GetAllAsync());
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { mensaje = "Error al obtener zonas", error = ex.Message });
-        }
+        try { return Ok(await _zoneService.GetAllAsync()); }
+        catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al obtener zonas", error = ex.Message }); }
     }
 
     [Authorize]
     [HttpGet("{id}")]
     public async Task<ActionResult<ZoneResponseDto>> GetById(int id)
     {
+        try { return Ok(await _zoneService.GetByIdAsync(id)); }
+        catch (KeyNotFoundException ex) { return NotFound(new { mensaje = ex.Message }); }
+        catch (ArgumentException ex) { return BadRequest(new { mensaje = ex.Message }); }
+        catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al obtener zona", error = ex.Message }); }
+    }
+
+    /// <summary>
+    /// Devuelve los animales que están actualmente en una zona específica
+    /// </summary>
+    [Authorize]
+    [HttpGet("{id}/animales")]
+    public async Task<ActionResult> GetAnimalesByZona(int id)
+    {
+        try { return Ok(await _zoneService.GetAnimalesByZonaAsync(id)); }
+        catch (KeyNotFoundException ex) { return NotFound(new { mensaje = ex.Message }); }
+        catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al obtener animales de la zona", error = ex.Message }); }
+    }
+
+    /// <summary>
+    /// Devuelve el historial de movimientos de todas las zonas
+    /// </summary>
+    [Authorize]
+    [HttpGet("movimientos")]
+    public async Task<ActionResult> GetMovimientos()
+    {
+        try { return Ok(await _zoneService.GetMovimientosAsync()); }
+        catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al obtener movimientos", error = ex.Message }); }
+    }
+
+    /// <summary>
+    /// Devuelve el historial de movimientos de un animal específico
+    /// </summary>
+    [Authorize]
+    [HttpGet("movimientos/{animalId}")]
+    public async Task<ActionResult> GetMovimientosByAnimal(int animalId)
+    {
+        try { return Ok(await _zoneService.GetMovimientosByAnimalAsync(animalId)); }
+        catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al obtener movimientos del animal", error = ex.Message }); }
+    }
+
+    /// <summary>
+    /// Mueve un animal de su zona actual a una zona destino y registra el movimiento
+    /// </summary>
+    [Authorize(Roles = "Administrador,Veterinario")]
+    [HttpPost("mover-animal")]
+    public async Task<ActionResult> MoverAnimal([FromBody] MoverAnimalDto dto)
+    {
         try
         {
-            return Ok(await _zoneService.GetByIdAsync(id));
+            // Obtener el ID del usuario autenticado desde el token JWT
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int usuarioId))
+                return Unauthorized(new { mensaje = "No se pudo identificar al usuario" });
+
+            await _zoneService.MoverAnimalAsync(dto, usuarioId);
+            return Ok(new { mensaje = "Animal movido correctamente" });
         }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(new { mensaje = ex.Message });
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { mensaje = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { mensaje = "Error al obtener zona", error = ex.Message });
-        }
+        catch (KeyNotFoundException ex) { return NotFound(new { mensaje = ex.Message }); }
+        catch (InvalidOperationException ex) { return BadRequest(new { mensaje = ex.Message }); }
+        catch (ArgumentException ex) { return BadRequest(new { mensaje = ex.Message }); }
+        catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al mover el animal", error = ex.Message }); }
     }
 
     [Authorize(Roles = "Administrador")]
@@ -60,14 +98,8 @@ public class ZoneController : ControllerBase
             var zone = await _zoneService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = zone.Id }, zone);
         }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { mensaje = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { mensaje = "Error al crear zona", error = ex.Message });
-        }
+        catch (ArgumentException ex) { return BadRequest(new { mensaje = ex.Message }); }
+        catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al crear zona", error = ex.Message }); }
     }
 
     [Authorize(Roles = "Administrador")]
@@ -80,14 +112,8 @@ public class ZoneController : ControllerBase
             if (!updated) return NotFound(new { mensaje = $"No existe una zona con ID {id}." });
             return NoContent();
         }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { mensaje = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { mensaje = "Error al actualizar zona", error = ex.Message });
-        }
+        catch (ArgumentException ex) { return BadRequest(new { mensaje = ex.Message }); }
+        catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al actualizar zona", error = ex.Message }); }
     }
 
     [Authorize(Roles = "Administrador")]
@@ -100,21 +126,8 @@ public class ZoneController : ControllerBase
             if (!deleted) return NotFound(new { mensaje = $"No existe una zona con ID {id}." });
             return NoContent();
         }
-        catch (InvalidOperationException ex)
-        {
-            return BadRequest(new { mensaje = ex.Message });
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { mensaje = ex.Message });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { mensaje = "Error al eliminar zona", error = ex.Message });
-        }
+        catch (InvalidOperationException ex) { return BadRequest(new { mensaje = ex.Message }); }
+        catch (ArgumentException ex) { return BadRequest(new { mensaje = ex.Message }); }
+        catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al eliminar zona", error = ex.Message }); }
     }
 }
-
-// TODO: agregar validaciones y agregue el try catch a cada método, para manejar errores de forma centralizada y evitar que el servidor devuelva errores 500 sin control.
-
-

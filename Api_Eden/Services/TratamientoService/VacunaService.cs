@@ -22,28 +22,28 @@ namespace Api_Eden.Services.TratamientoService
 
             try
             {
-                // 🔍 VALIDAR ANIMAL
+                //  VALIDAR ANIMAL
                 var animal = await _db.Animales.FindAsync(dto.AnimalId);
                 if (animal is null)
                     return (false, "Animal no encontrado.", null);
                
 
-                // 🔍 VALIDAR QUE EL ANIMAL NO ESTÉ FALLECIDO
+                // VALIDAR QUE EL ANIMAL NO ESTÉ FALLECIDO
                 if (animal.FechaFallecimiento.HasValue)
                     return (false, "No se puede registrar una vacuna. El animal está fallecido.", null);
 
-                // 🔍 VALIDAR TIPO DE VACUNA
+                // VALIDAR TIPO DE VACUNA
                 var tipoVacuna = await _db.Tiposvacunas.FindAsync(dto.TipoVacunaId);
                 if (tipoVacuna is null)
                     return (false, "Tipo de vacuna no encontrado.", null);
 
-                // 🔍 VALIDAR VETERINARIO
+                //VALIDAR VETERINARIO
                 var veterinario = await _db.Usuarios.FindAsync(dto.VeterinarioId);
-                if (veterinario is null || veterinario.Rol != "Veterinario")
-                    return (false, "El veterinario no existe o no es válido.", null);
+                if (veterinario is null || (veterinario.Rol != "Veterinario" && veterinario.Rol != "Administrador"))
+                return (false, "El usuario no existe o no tiene permisos para registrar vacunas.", null);
 
-                // 🔍 VALIDAR FECHAS
-                var hoy = DateOnly.FromDateTime(DateTime.Today);
+                    //  VALIDAR FECHAS
+                    var hoy = DateOnly.FromDateTime(DateTime.Today);
 
                 if (dto.FechaAplicacion > hoy)
                     return (false, "La fecha de aplicación no puede ser futura.", null);
@@ -51,7 +51,7 @@ namespace Api_Eden.Services.TratamientoService
                 if (dto.ProximaDosis.HasValue && dto.ProximaDosis < dto.FechaAplicacion)
                     return (false, "La próxima dosis no puede ser menor que la fecha de aplicación.", null);
 
-                // 🔍 VALIDAR DUPLICADOS (MISMA VACUNA MISMO DÍA)
+                // VALIDAR DUPLICADOS (MISMA VACUNA MISMO DÍA)
                 var yaExiste = await _db.Vacunas.AnyAsync(v =>
                     v.AnimalId == dto.AnimalId &&
                     v.TipoVacunaId == dto.TipoVacunaId &&
@@ -60,12 +60,12 @@ namespace Api_Eden.Services.TratamientoService
                 if (yaExiste)
                     return (false, "Esta vacuna ya fue registrada para este animal en esa fecha.", null);
 
-                // 🔍 VALIDAR LOTE (OPCIONAL PERO LIMPIO)
+                // VALIDAR LOTE (OPCIONAL PERO LIMPIO)
                 var lote = dto.Lote?.Trim();
                 if (!string.IsNullOrEmpty(lote) && lote.Length > 50)
                     return (false, "El lote no puede exceder 50 caracteres.", null);
 
-                // 🧠 CREAR VACUNA
+                // CREAR VACUNA
                 var vacuna = new Vacuna
                 {
                     AnimalId = dto.AnimalId,

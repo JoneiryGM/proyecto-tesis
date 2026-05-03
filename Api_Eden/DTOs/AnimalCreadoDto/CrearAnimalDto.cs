@@ -5,13 +5,11 @@ namespace Api_Eden.DTOs.AnimalCreadoDto
     public class CrearAnimalDto
     {
         [Required(ErrorMessage = "El nombre es obligatorio")]
-        [StringLength(50, ErrorMessage = "El nombre no puede exceder 100 caracteres")]
+        [StringLength(100, ErrorMessage = "El nombre no puede exceder 100 caracteres")]
         public string Nombre { get; set; } = null!;
-
 
         [Required(ErrorMessage = "La especie es obligatoria")]
         public int EspecieId { get; set; }
-
 
         [StringLength(100)]
         public string? Raza { get; set; }
@@ -26,7 +24,14 @@ namespace Api_Eden.DTOs.AnimalCreadoDto
 
         public int? ZonaActualId { get; set; }
 
+        [StringLength(50)]
+        public string? Color { get; set; }
 
+        public string? FotografiaUrl { get; set; }
 
+        [StringLength(500)]
+        public string? Observaciones { get; set; }
+
+        public int? UsuarioRegistroId { get; set; }
     }
 }

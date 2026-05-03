@@ -149,40 +149,49 @@ namespace Api_Eden.Services.AdopcionesService
                 if (adopcion is null)
                     return (false, "Adopción no encontrada.");
 
-                // Guardar el estado anterior para saber qué transición estamos haciendo
                 var estadoAnterior = adopcion.EstadoAdopcion;
-
                 adopcion.EstadoAdopcion = dto.Estado;
-                adopcion.Observaciones = dto.Observaciones;
 
-                // Lógica robusta de transición de estados
+                if (!string.IsNullOrWhiteSpace(dto.Observaciones))
+                    adopcion.Observaciones = dto.Observaciones;
+
                 if (adopcion.Animal != null)
                 {
-                    if (dto.Estado == "Devuelto" || dto.Estado == "Rechazada")
+                    switch (dto.Estado)
                     {
-                        adopcion.Animal.EstadoGeneral = "Activo";
-                        adopcion.Animal.FechaAdopcion = null;
-                    }
-                    else if (dto.Estado == "Aprobada" && (estadoAnterior == "Devuelto" || estadoAnterior == "Rechazada"))
-                    {
-                        // Si se había devuelto/rechazado pero corrigen a "Aprobada", volvemos a marcar al animal como adoptado
-                        adopcion.Animal.EstadoGeneral = "Adoptado";
-                        adopcion.Animal.FechaAdopcion = adopcion.FechaAdopcion; // Restauramos la fecha
+                        case "Aprobada":
+                            adopcion.Animal.EstadoGeneral = "Adoptado";
+                            adopcion.Animal.FechaAdopcion = adopcion.FechaAdopcion;
+                            break;   
+                        case "Rechazada":
+                        case "Devuelto":
+                            adopcion.Animal.EstadoGeneral = "Activo";
+                            adopcion.Animal.FechaAdopcion = null;
+                            break;
+                      
+                        case "Pendiente":
+                            if (estadoAnterior == "Aprobada")
+                            {
+                  
+                                adopcion.Animal.EstadoGeneral = "Activo";
+                                adopcion.Animal.FechaAdopcion = null;
+                            }
+                            break;
                     }
                 }
 
                 await _db.SaveChangesAsync();
-                return (true, $"Estado de adopción actualizado a {dto.Estado}.");
+                return (true, $"Estado de adopción actualizado a '{dto.Estado}'.");
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                _logger.LogWarning(ex, "Conflicto de concurrencia al actualizar la adopción {AdopcionId}.", id);
-                return (false, "El registro fue modificado por otro usuario. Por favor, recarga y vuelve a intentarlo.");
+                _logger.LogWarning(ex, "Conflicto de concurrencia al actualizar adopción {Id}.", id);
+                return (false, "El registro fue modificado por otro usuario. Recarga e intenta de nuevo.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al actualizar estado de adopción {AdopcionId}.", id);
-                return (false, "Ocurrió un error interno al intentar actualizar el estado.");
+                _logger.LogError(ex, "Error al actualizar estado de adopción {Id}.", id);
+                return (false, "Error interno al actualizar el estado.");
             }
         }
     }

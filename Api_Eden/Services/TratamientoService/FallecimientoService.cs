@@ -38,8 +38,8 @@ namespace Api_Eden.Services.TratamientoService
 
                 // 🔍 VALIDAR VETERINARIO
                 var veterinario = await _db.Usuarios.FindAsync(dto.VeterinarioId);
-                if (veterinario is null || veterinario.Rol != "Veterinario")
-                    return (false, "El veterinario no existe o no es válido.");
+                if (veterinario is null || (veterinario.Rol != "Veterinario" && veterinario.Rol != "Administrador"))
+                    return (false, "El usuario no existe o no tiene permisos para registrar vacunas.");
 
                 // 🔍 VALIDAR USUARIO REGISTRO
                 var usuario = await _db.Usuarios.FindAsync(dto.UsuarioRegistroId);

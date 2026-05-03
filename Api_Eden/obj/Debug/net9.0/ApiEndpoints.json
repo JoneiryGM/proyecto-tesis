@@ -241,6 +241,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Api_Eden.Controllers.DashboardController",
+    "Method": "GetResumen",
+    "RelativePath": "api/Dashboard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Api_Eden.Controllers.FallecimientoController",
     "Method": "GetFallecimientos",
     "RelativePath": "api/Fallecimiento",
@@ -466,6 +476,64 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Api_Eden.Controllers.InventarioController",
+    "Method": "RegistrarEntrada",
+    "RelativePath": "api/Inventario/{id}/entrada",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "Api_Eden.DTOs.InventarioAlimentos.RegistrarMovimientoDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.InventarioController",
+    "Method": "GetMovimientos",
+    "RelativePath": "api/Inventario/{id}/movimientos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.InventarioController",
+    "Method": "RegistrarSalida",
+    "RelativePath": "api/Inventario/{id}/salida",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "Api_Eden.DTOs.InventarioAlimentos.RegistrarMovimientoDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Api_Eden.Controllers.MedicoController",
     "Method": "RegistrarHistorial",
     "RelativePath": "api/Medico/historial",
@@ -495,6 +563,42 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.MedicoController",
+    "Method": "GetMedicamentos",
+    "RelativePath": "api/Medico/medicamentos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.MedicoController",
+    "Method": "CrearMedicamento",
+    "RelativePath": "api/Medico/medicamentos",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Api_Eden.DTOs.MedicoDto.CrearMedicamentoDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.MedicoController",
+    "Method": "GetTiposVacuna",
+    "RelativePath": "api/Medico/tipos-vacuna",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -535,6 +639,26 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Api_Eden.Controllers.MedicoController",
+    "Method": "GetTratamientos",
+    "RelativePath": "api/Medico/tratamientos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.MedicoController",
+    "Method": "GetVeterinarios",
+    "RelativePath": "api/Medico/veterinarios",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Api_Eden.Controllers.VacunaController",
     "Method": "RegistrarVacuna",
     "RelativePath": "api/Vacuna",
@@ -564,6 +688,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.VacunaController",
+    "Method": "GetTodasLasVacunas",
+    "RelativePath": "api/Vacuna/todas",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
@@ -669,6 +803,64 @@
     "Parameters": [
       {
         "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.ZoneController",
+    "Method": "GetAnimalesByZona",
+    "RelativePath": "api/Zone/{id}/animales",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.ZoneController",
+    "Method": "MoverAnimal",
+    "RelativePath": "api/Zone/mover-animal",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Api_Eden.DTOs.Zone.Request.MoverAnimalDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.ZoneController",
+    "Method": "GetMovimientos",
+    "RelativePath": "api/Zone/movimientos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.ZoneController",
+    "Method": "GetMovimientosByAnimal",
+    "RelativePath": "api/Zone/movimientos/{animalId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "animalId",
         "Type": "System.Int32",
         "IsRequired": true
       }

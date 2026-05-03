@@ -33,4 +33,13 @@
         DateOnly? FechaVencimiento,
         bool? Activo
     );
+    
+    public record RegistrarMovimientoDto(
+        decimal Cantidad,
+        string? Motivo,
+        int UsuarioResponsableId,
+        string? Observaciones,
+        decimal? CostoUnitario
+    );
+
 }

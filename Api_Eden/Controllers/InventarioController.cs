@@ -22,45 +22,45 @@ namespace Api_Eden.Controllers
 
         }
 
-      // GET: api/alimento
-    [Authorize(Roles = "Administrador,Trabajador")]
-    [HttpGet]
-    public async Task<IActionResult> GetAlimentos()
-    {
-        try
+        // GET: api/alimento
+        [Authorize(Roles = "Administrador,Trabajador")]
+        [HttpGet]
+        public async Task<IActionResult> GetAlimentos()
         {
-            var alimentos = await _db.Alimentos
-                .Where(a => a.Activo == true)
-                .Select(a => new AlimentoDto(
-                    a.Id,
-                    a.Nombre,
-                    a.TipoAnimal,
-                    a.Marca,
-                    a.UnidadMedida,
-                    a.CantidadDisponible,
-                    a.StockMinimo,
-                    a.FechaVencimiento,
-                    a.Activo,
-                    a.CantidadDisponible <= a.StockMinimo  // alerta stock bajo
-                ))
-                .ToListAsync();
-
-            var stockBajo = alimentos.Where(a => a.StockBajo).ToList();
-
-            return Ok(new
+            try
             {
-                total        = alimentos.Count,
-                alertaStock  = stockBajo.Count > 0
-                    ? $"{stockBajo.Count} alimento(s) con stock bajo"
-                    : "Stock en niveles normales",
-                alimentos
-            });
+                var alimentos = await _db.Alimentos
+                    .Where(a => a.Activo == true)
+                    .Select(a => new AlimentoDto(
+                        a.Id,
+                        a.Nombre,
+                        a.TipoAnimal,
+                        a.Marca,
+                        a.UnidadMedida,
+                        a.CantidadDisponible,
+                        a.StockMinimo,
+                        a.FechaVencimiento,
+                        a.Activo,
+                        a.CantidadDisponible <= a.StockMinimo  // alerta stock bajo
+                    ))
+                    .ToListAsync();
+
+                var stockBajo = alimentos.Where(a => a.StockBajo).ToList();
+
+                return Ok(new
+                {
+                    total = alimentos.Count,
+                    alertaStock = stockBajo.Count > 0
+                        ? $"{stockBajo.Count} alimento(s) con stock bajo"
+                        : "Stock en niveles normales",
+                    alimentos
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error interno del servidor", error = ex.Message });
+            }
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new { mensaje = "Error interno del servidor", error = ex.Message });
-        }
-    }
 
 
 
@@ -94,7 +94,7 @@ namespace Api_Eden.Controllers
                 return StatusCode(500, new { mensaje = "Error interno del servidor", error = ex.Message });
             }
         }
-       
+
         [Authorize(Roles = "Administrador")]
         [HttpPost]
         public async Task<IActionResult> PostAlimento([FromBody] CrearAlimentoDto dto)
@@ -203,6 +203,125 @@ namespace Api_Eden.Controllers
                 return StatusCode(500, new { mensaje = "Error al eliminar el alimento", error = ex.Message });
             }
         }
+    
+
+        [Authorize(Roles = "Administrador,Trabajador")]
+        [HttpPost("{id}/entrada")]
+        public async Task<IActionResult> RegistrarEntrada(int id, [FromBody] RegistrarMovimientoDto dto)
+        {
+            try
+            {
+                var alimento = await _db.Alimentos.FindAsync(id);
+                if (alimento is null)
+                    return NotFound(new { mensaje = "Alimento no encontrado." });
+
+                alimento.CantidadDisponible += dto.Cantidad;
+
+                var movimiento = new Movimientosinventario
+                {
+                    AlimentoId = id,
+                    TipoMovimiento = "Entrada",
+                    Cantidad = dto.Cantidad,
+                    Motivo = dto.Motivo ?? "Reposición de stock",
+                    FechaMovimiento = DateTime.UtcNow,
+                    UsuarioResponsableId = dto.UsuarioResponsableId,
+                    Observaciones = dto.Observaciones,
+                    CostoUnitario = dto.CostoUnitario,
+                };
+
+                _db.Movimientosinventarios.Add(movimiento);
+                await _db.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    mensaje = "Entrada registrada correctamente.",
+                    nuevoStock = alimento.CantidadDisponible,
+                    stockBajo = alimento.CantidadDisponible <= alimento.StockMinimo
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al registrar entrada", error = ex.Message });
+            }
+        }
+
+        // POST: api/inventario/{id}/salida
+        [Authorize(Roles = "Administrador,Trabajador")]
+        [HttpPost("{id}/salida")]
+        public async Task<IActionResult> RegistrarSalida(int id, [FromBody] RegistrarMovimientoDto dto)
+        {
+            try
+            {
+                var alimento = await _db.Alimentos.FindAsync(id);
+                if (alimento is null)
+                    return NotFound(new { mensaje = "Alimento no encontrado." });
+
+                if (dto.Cantidad > alimento.CantidadDisponible)
+                    return BadRequest(new
+                    {
+                        mensaje = $"Stock insuficiente. Disponible: {alimento.CantidadDisponible} {alimento.UnidadMedida}"
+                    });
+
+                alimento.CantidadDisponible -= dto.Cantidad;
+
+                var movimiento = new Movimientosinventario
+                {
+                    AlimentoId = id,
+                    TipoMovimiento = "Salida",
+                    Cantidad = dto.Cantidad,
+                    Motivo = dto.Motivo ?? "Consumo",
+                    FechaMovimiento = DateTime.UtcNow,
+                    UsuarioResponsableId = dto.UsuarioResponsableId,
+                    Observaciones = dto.Observaciones,
+                };
+
+                _db.Movimientosinventarios.Add(movimiento);
+                await _db.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    mensaje = "Salida registrada correctamente.",
+                    nuevoStock = alimento.CantidadDisponible,
+                    stockBajo = alimento.CantidadDisponible <= alimento.StockMinimo
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al registrar salida", error = ex.Message });
+            }
+        }
+
+        // GET: api/inventario/{id}/movimientos
+        [Authorize(Roles = "Administrador,Trabajador")]
+        [HttpGet("{id}/movimientos")]
+        public async Task<IActionResult> GetMovimientos(int id)
+        {
+            try
+            {
+                var movimientos = await _db.Movimientosinventarios
+                    .Include(m => m.UsuarioResponsable)
+                    .Where(m => m.AlimentoId == id)
+                    .OrderByDescending(m => m.FechaMovimiento)
+                    .Select(m => new
+                    {
+                        m.Id,
+                        m.AlimentoId,
+                        m.TipoMovimiento,
+                        m.Cantidad,
+                        m.Motivo,
+                        FechaMovimiento = m.FechaMovimiento ?? DateTime.UtcNow,
+                        UsuarioResponsable = $"{m.UsuarioResponsable.Nombre} {m.UsuarioResponsable.Apellido}",
+                        m.Observaciones,
+                        m.CostoUnitario,
+                    })
+                    .ToListAsync();
+
+                return Ok(movimientos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al obtener movimientos", error = ex.Message });
+            }
+        }
     }
 }
-

@@ -1,9 +1,11 @@
 using Api_Eden.Configs;
 using Api_Eden.Data;
-using Api_Eden.Models;
+
 using Api_Eden.Services;
 using Api_Eden.Services.AdopcionesService;
 using Api_Eden.Services.AdopcionesService.Interface;
+using Api_Eden.Services.Dashboard.Interface;
+using Api_Eden.Services.DashboardService;
 using Api_Eden.Services.GastosService;
 using Api_Eden.Services.GastosService.Interface;
 using Api_Eden.Services.TratamientoService;
@@ -20,7 +22,22 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddExceptionHandler<ExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-// 1. Controladores
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "https://localhost:5173"
+              )
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
+// 2. Controladores
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -47,7 +64,7 @@ builder.Services.AddControllers()
         };
     });
 
-// 2. Swagger 
+// 3. Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -79,22 +96,22 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<AnimalService>();
 builder.Services.AddScoped<AuthService>();
-// Services médicos
 builder.Services.AddScoped<IFallecimientoService, FallecimientoService>();
 builder.Services.AddScoped<ITratamientoService, TratamientoService>();
 builder.Services.AddScoped<IVacunaService, VacunaService>();
 builder.Services.AddScoped<ZoneService>();
 builder.Services.AddScoped<IAdopcionService, AdopcionService>();
 builder.Services.AddScoped<IGastoService, GastoService>();
+builder.Services.AddScoped<IDashboardService,DashboardService>();
 
-// 3. Base de Datos MySQL
+// 4. Base de Datos MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
     ));
 
-// 4. Autenticación JWT
+// 5. Autenticación JWT
 var jwtConfig = builder.Configuration.GetSection("Jwt");
 var key = Encoding.UTF8.GetBytes(jwtConfig["Key"]!);
 
@@ -119,10 +136,11 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// 5. Middleware Pipeline
+// 6. Middleware Pipeline  
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
+app.UseCors("AllowFrontend");       
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

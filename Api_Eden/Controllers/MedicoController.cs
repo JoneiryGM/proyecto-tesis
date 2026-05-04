@@ -297,5 +297,48 @@ namespace Api_Eden.Controllers
                 return StatusCode(500, new { mensaje = "Error al obtener veterinarios", error = ex.Message });
             }
         }
+
+
+
+        [Authorize]
+        [HttpGet("tratamientosall")]
+        public async Task<IActionResult> GetAllTratamientos()
+        {
+            try
+            {
+                var data = await _db.Tratamientos
+                    .Include(t => t.Medicamento)
+                    .Include(t => t.HistorialMedico)
+                        .ThenInclude(h => h.Animal)
+                            .ThenInclude(a => a.Especie)
+                    .OrderByDescending(t => t.FechaInicio)
+                    .Select(t => new
+                    {
+                        t.Id,
+                        AnimalId = t.HistorialMedico.AnimalId,
+                        Animal = t.HistorialMedico.Animal.Nombre,
+                        FotografiaUrl = t.HistorialMedico.Animal.FotografiaUrl,
+                        Especie = t.HistorialMedico.Animal.Especie != null
+                                              ? t.HistorialMedico.Animal.Especie.Nombre : null,
+                        Diagnostico = t.HistorialMedico.Diagnostico,
+                        Medicamento = t.Medicamento.Nombre,
+                        t.Dosis,
+                        t.Frecuencia,
+                        t.ViaAdministracion,
+                        t.Estado,
+                        FechaInicio = t.FechaInicio.ToString("yyyy-MM-dd"),
+                        FechaFin = t.FechaFin != null
+                                              ? t.FechaFin.Value.ToString("yyyy-MM-dd") : null,
+                        HistorialMedicoId = t.HistorialMedicoId,
+                    })
+                    .ToListAsync();
+
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al obtener tratamientos", error = ex.Message });
+            }
+        }
     }
 }

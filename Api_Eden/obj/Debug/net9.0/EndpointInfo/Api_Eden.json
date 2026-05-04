@@ -296,6 +296,48 @@
         }
       }
     },
+    "/api/Animal/{id}/estado": {
+      "patch": {
+        "tags": [
+          "Animal"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarEstadoAnimalDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarEstadoAnimalDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarEstadoAnimalDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Auth/Registro": {
       "post": {
         "tags": [
@@ -1091,6 +1133,18 @@
         }
       }
     },
+    "/api/Medico/tratamientosall": {
+      "get": {
+        "tags": [
+          "Medico"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Vacuna/animal/{animalId}": {
       "get": {
         "tags": [
@@ -1483,6 +1537,20 @@
             "nullable": true
           },
           "observaciones": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ActualizarEstadoAnimalDto": {
+        "type": "object",
+        "properties": {
+          "estadoGeneral": {
+            "type": "string",
+            "nullable": true
+          },
+          "estadoSalud": {
             "type": "string",
             "nullable": true
           }

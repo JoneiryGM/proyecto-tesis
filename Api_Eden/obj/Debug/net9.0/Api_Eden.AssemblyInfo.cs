@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Api_Eden")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+51455611feb8f237289b5379fc17b2f4a6aff438")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+543f657fb50af885f9a6aefa69d0e1a25e0f2784")]
 [assembly: System.Reflection.AssemblyProductAttribute("Api_Eden")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Api_Eden")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

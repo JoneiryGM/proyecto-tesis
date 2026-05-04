@@ -110,5 +110,26 @@ public class AnimalController : ControllerBase
             return StatusCode(500, new { mensaje = "Error al eliminar el animal", error = ex.Message });
         }
     }
+
+
+    [HttpPatch("{id}/estado")]
+    [Authorize(Roles = "Administrador,Veterinario")]
+    public async Task<IActionResult> ActualizarEstado(int id, [FromBody] ActualizarEstadoAnimalDto dto)
+    {
+        try
+        {
+            var actualizado = await _animalService.ActualizarEstadoAsync(
+                id, dto.EstadoGeneral, dto.EstadoSalud);
+
+            if (!actualizado)
+                return NotFound(new { mensaje = "Animal no encontrado." });
+
+            return Ok(new { mensaje = "Estado actualizado correctamente." });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { mensaje = "Error al actualizar estado", error = ex.Message });
+        }
+    }
 }
 

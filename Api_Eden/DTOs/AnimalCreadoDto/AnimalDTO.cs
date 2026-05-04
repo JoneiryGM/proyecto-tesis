@@ -20,4 +20,9 @@ namespace Api_Eden.DTOs.AnimalCreadoDto
         public string? EstadoSalud { get; set; }
         public string? EstadoGeneral { get; set; }
     }
+      public record ActualizarEstadoAnimalDto(
+        string? EstadoGeneral,
+        string? EstadoSalud
+    );
 }
+

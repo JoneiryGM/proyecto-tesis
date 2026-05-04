@@ -40,27 +40,23 @@ namespace Api_Eden.Services.TratamientoService
                 FechaFin = DateOnly.FromDateTime(dto.FechaFin),
                 VeterinarioId = dto.VeterinarioId,
                 Observaciones = dto.Observaciones,
-                Estado = "Activo", // ← siempre Activo al crear
+                Estado = "Activo",
                 FechaCreacion = DateTime.UtcNow
             };
 
             _db.Tratamientos.Add(tratamiento);
 
-            // Lógica de negocio —
-            // actualizar estado de salud del animal
-            _db.Entry(animal).State = EntityState.Detached;
-            var animalFresh = await _db.Animales.FindAsync(historial.AnimalId);
-            if (animalFresh is not null)
-            {
-                animalFresh.EstadoSalud = "EnTratamiento";
-                await _db.SaveChangesAsync();
-            }
+           
+            animal.EstadoSalud = "EnTratamiento";
 
+      
+            await _db.SaveChangesAsync();
 
             return (true, "Tratamiento registrado correctamente.", tratamiento.Id);
         }
 
-        public async Task<(bool ok, string mensaje)> ActualizarEstadoTratamiento(int id, string estado, int veterinarioId)
+        public async Task<(bool ok, string mensaje)> ActualizarEstadoTratamiento(
+            int id, string estado, int veterinarioId)
         {
             var estadosValidos = new[] { "Activo", "Completado", "Suspendido" };
             if (!estadosValidos.Contains(estado))
@@ -82,9 +78,9 @@ namespace Api_Eden.Services.TratamientoService
                 if (animal is null)
                     return (false, "Animal no encontrado.");
 
-                // Solo marca como Recuperado si no tiene otros tratamientos activos
+                // Solo marca Recuperado si no quedan otros tratamientos activos
                 var tieneActivos = await _db.Tratamientos
-                    .AnyAsync(t => t.HistorialMedicoId == historial.Id
+                    .AnyAsync(t => t.HistorialMedico.AnimalId == historial.AnimalId
                                 && t.Id != id
                                 && t.Estado == "Activo");
 
@@ -93,7 +89,6 @@ namespace Api_Eden.Services.TratamientoService
             }
 
             await _db.SaveChangesAsync();
-
             return (true, $"Tratamiento actualizado a {estado}.");
         }
     }

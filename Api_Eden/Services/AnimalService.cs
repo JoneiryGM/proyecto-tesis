@@ -14,18 +14,17 @@ public class AnimalService
         _context = context;
     }
 
-    
     private static AnimalDTO MapToDto(Animale a) => new AnimalDTO
     {
         Id = a.Id,
         Nombre = a.Nombre,
-        Especie = a.Especie?.Nombre,          
+        Especie = a.Especie?.Nombre,
         EspecieId = a.EspecieId,
         Raza = a.Raza,
         Edad = a.Edad,
-        FechaIngreso = a.FechaIngreso.ToString("yyyy-MM-dd"), 
+        FechaIngreso = a.FechaIngreso.ToString("yyyy-MM-dd"),
         Sexo = a.Sexo,
-        ZonaActual = a.ZonaActual?.Nombre,       
+        ZonaActual = a.ZonaActual?.Nombre,
         ZonaActualId = a.ZonaActualId,
         Color = a.Color,
         FotografiaUrl = a.FotografiaUrl,
@@ -85,7 +84,6 @@ public class AnimalService
         _context.Animales.Add(nuevoAnimal);
         await _context.SaveChangesAsync();
 
-        
         return (await GetByIdAsync(nuevoAnimal.Id))!;
     }
 
@@ -121,6 +119,24 @@ public class AnimalService
         if (animal == null) return false;
 
         _context.Animales.Remove(animal);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    // ── Nuevo: actualiza EstadoGeneral y/o EstadoSalud ───────────────────────
+    public async Task<bool> ActualizarEstadoAsync(
+        int id, string? estadoGeneral, string? estadoSalud)
+    {
+        var animal = await _context.Animales.FindAsync(id);
+        if (animal == null) return false;
+
+        if (!string.IsNullOrEmpty(estadoGeneral))
+            animal.EstadoGeneral = estadoGeneral;
+
+        if (!string.IsNullOrEmpty(estadoSalud))
+            animal.EstadoSalud = estadoSalud;
+
+        animal.FechaUltimaModificacion = DateTime.Now;
         await _context.SaveChangesAsync();
         return true;
     }

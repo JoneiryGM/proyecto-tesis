@@ -6,8 +6,12 @@ using Api_Eden.Services.AdopcionesService;
 using Api_Eden.Services.AdopcionesService.Interface;
 using Api_Eden.Services.Dashboard.Interface;
 using Api_Eden.Services.DashboardService;
+using Api_Eden.Services.DonacionesService.Interface;
+using Api_Eden.Services.DonacionService;
 using Api_Eden.Services.GastosService;
 using Api_Eden.Services.GastosService.Interface;
+using Api_Eden.Services.ObjetivoService;
+using Api_Eden.Services.ObjetivoService.Interface;
 using Api_Eden.Services.TratamientoService;
 using Api_Eden.Services.TratamientoService.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -103,6 +107,8 @@ builder.Services.AddScoped<ZoneService>();
 builder.Services.AddScoped<IAdopcionService, AdopcionService>();
 builder.Services.AddScoped<IGastoService, GastoService>();
 builder.Services.AddScoped<IDashboardService,DashboardService>();
+builder.Services.AddScoped<IDonacionService,DonacionService>();
+builder.Services.AddScoped<IObjetivoService, ObjetivoService>();
 
 // 4. Base de Datos MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>

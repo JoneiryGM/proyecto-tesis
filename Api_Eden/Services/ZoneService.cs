@@ -80,9 +80,9 @@ public class ZoneService
             .ToListAsync();
     }
 
-    /// <summary>
-    /// Retorna el historial de movimientos de todas las zonas, ordenado por fecha descendente
-    /// </summary>
+    
+    // Retorna el historial de movimientos de todas las zonas, ordenado por fecha descendente
+   
     public async Task<IEnumerable<object>> GetMovimientosAsync()
     {
         return await _context.Historialmovimientos
@@ -161,10 +161,8 @@ public class ZoneService
                     zonaOrigen.CantidadActual--;
             }
 
-            // Incrementar zona destino
             zonaDestino.CantidadActual = capacidadActual + 1;
 
-            // Actualizar zona del animal
             animal.ZonaActualId = dto.ZonaDestinoId;
 
             // Registrar movimiento

@@ -272,6 +272,78 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Api_Eden.Controllers.DonacionController",
+    "Method": "GetAll",
+    "RelativePath": "api/Donacion",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.DonacionController",
+    "Method": "Registrar",
+    "RelativePath": "api/Donacion",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Api_Eden.DTOs.DonacionesDto.RegistrarDonacionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.DonacionController",
+    "Method": "Eliminar",
+    "RelativePath": "api/Donacion/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.DonacionController",
+    "Method": "GetDonantes",
+    "RelativePath": "api/Donacion/donantes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.DonacionController",
+    "Method": "GetResumen",
+    "RelativePath": "api/Donacion/resumen",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.DonacionController",
+    "Method": "GetTipos",
+    "RelativePath": "api/Donacion/tipos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Api_Eden.Controllers.FallecimientoController",
     "Method": "GetFallecimientos",
     "RelativePath": "api/Fallecimiento",
@@ -687,6 +759,69 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.ObjetivoController",
+    "Method": "GetAll",
+    "RelativePath": "api/Objetivo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.ObjetivoController",
+    "Method": "Crear",
+    "RelativePath": "api/Objetivo",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Api_Eden.DTOs.ObjectivoDto.CrearObjetivoDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.ObjetivoController",
+    "Method": "Actualizar",
+    "RelativePath": "api/Objetivo/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "Api_Eden.DTOs.ObjectivoDto.ActualizarObjetivoDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Api_Eden.Controllers.ObjetivoController",
+    "Method": "Eliminar",
+    "RelativePath": "api/Objetivo/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

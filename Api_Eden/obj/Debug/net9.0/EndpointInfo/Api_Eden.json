@@ -475,6 +475,106 @@
         }
       }
     },
+    "/api/Donacion": {
+      "get": {
+        "tags": [
+          "Donacion"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Donacion"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrarDonacionDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrarDonacionDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrarDonacionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Donacion/resumen": {
+      "get": {
+        "tags": [
+          "Donacion"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Donacion/tipos": {
+      "get": {
+        "tags": [
+          "Donacion"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Donacion/donantes": {
+      "get": {
+        "tags": [
+          "Donacion"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Donacion/{id}": {
+      "delete": {
+        "tags": [
+          "Donacion"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Fallecimiento": {
       "get": {
         "tags": [
@@ -1145,6 +1245,110 @@
         }
       }
     },
+    "/api/Objetivo": {
+      "get": {
+        "tags": [
+          "Objetivo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Objetivo"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearObjetivoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearObjetivoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrearObjetivoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Objetivo/{id}": {
+      "put": {
+        "tags": [
+          "Objetivo"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarObjetivoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarObjetivoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActualizarObjetivoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Objetivo"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Vacuna/animal/{animalId}": {
       "get": {
         "tags": [
@@ -1606,6 +1810,37 @@
         },
         "additionalProperties": false
       },
+      "ActualizarObjetivoDto": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "montoObjetivo": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "estado": {
+            "type": "string",
+            "nullable": true
+          },
+          "fechaLimite": {
+            "type": "string",
+            "nullable": true
+          },
+          "observaciones": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ActualizarUsuarioDto": {
         "type": "object",
         "properties": {
@@ -1910,6 +2145,32 @@
         },
         "additionalProperties": false
       },
+      "CrearObjetivoDto": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string",
+            "nullable": true
+          },
+          "descripcion": {
+            "type": "string",
+            "nullable": true
+          },
+          "montoObjetivo": {
+            "type": "number",
+            "format": "double"
+          },
+          "fechaLimite": {
+            "type": "string",
+            "nullable": true
+          },
+          "observaciones": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateZoneDto": {
         "required": [
           "activa",
@@ -2026,6 +2287,73 @@
           "usuarioResponsableId": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RegistrarDonacionDto": {
+        "type": "object",
+        "properties": {
+          "tipoDonacionId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "fechaDonacion": {
+            "type": "string",
+            "nullable": true
+          },
+          "donanteId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "nombreDonante": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailDonante": {
+            "type": "string",
+            "nullable": true
+          },
+          "telefonoDonante": {
+            "type": "string",
+            "nullable": true
+          },
+          "montoDinero": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "valorEstimado": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "cantidadArticulos": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "descripcionDonacion": {
+            "type": "string",
+            "nullable": true
+          },
+          "formaPago": {
+            "type": "string",
+            "nullable": true
+          },
+          "numeroTransaccion": {
+            "type": "string",
+            "nullable": true
+          },
+          "objetivoId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "observaciones": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

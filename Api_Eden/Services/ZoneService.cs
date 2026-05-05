@@ -27,7 +27,6 @@ public class ZoneService
                 z.Nombre,
                 z.Descripcion,
                 z.CapacidadMaxima,
-                // Cuenta los animales activos reales en esa zona
                 z.Animales.Count(a => a.EstadoGeneral == "Activo"),
                 z.Activa,
                 z.FechaCreacion

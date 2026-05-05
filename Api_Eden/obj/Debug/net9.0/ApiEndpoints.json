@@ -262,6 +262,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Api_Eden.Controllers.AuthController",
+    "Method": "GetUsuarios",
+    "RelativePath": "api/Auth/usuarios",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Api_Eden.Controllers.DashboardController",
     "Method": "GetResumen",
     "RelativePath": "api/Dashboard",

@@ -123,7 +123,6 @@ public class AnimalService
         return true;
     }
 
-    // ── Nuevo: actualiza EstadoGeneral y/o EstadoSalud ───────────────────────
     public async Task<bool> ActualizarEstadoAsync(
         int id, string? estadoGeneral, string? estadoSalud)
     {

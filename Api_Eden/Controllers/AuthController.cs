@@ -69,7 +69,7 @@ namespace Api_Eden.Controllers
                     return Unauthorized(new { mensaje = "Credenciales inválidas" });
                 }
                 var token = GenerarToken(usuario);
-                
+
                 return Ok(new AuthResponseDto(token, usuario.Nombre, usuario.Email, usuario.Rol));
 
             }
@@ -148,25 +148,63 @@ namespace Api_Eden.Controllers
         }
 
         // DELETE api/auth/{id}
+       
+
         [Authorize(Roles = "Administrador")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Eliminar(int id)
         {
-            var usuario = await _db.Usuarios.FindAsync(id);
+            try
+            {
+                var usuario = await _db.Usuarios.FindAsync(id);
+                if (usuario is null)
+                    return NotFound(new { mensaje = "Usuario no encontrado." });
 
-            if (usuario is null)
-                return NotFound("Usuario no encontrado.");
+                var idActual = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                if (id == idActual)
+                    return BadRequest(new { mensaje = "No puedes eliminar tu propio usuario." });
 
-            var idActual = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-            if (id == idActual)
-                return BadRequest("No puedes eliminar tu propio usuario.");
+                
+                usuario.Activo = false;
+                usuario.FechaUltimaModificacion = DateTime.UtcNow;
 
-            _db.Usuarios.Remove(usuario);
-            await _db.SaveChangesAsync();
-
-            return Ok(new { mensaje = "Usuario eliminado correctamente." });
+                await _db.SaveChangesAsync();
+                return Ok(new { mensaje = "Usuario desactivado correctamente." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al eliminar usuario", error = ex.Message });
+            }
         }
 
-    }
-    
-}
+
+
+        [Authorize(Roles = "Administrador")]
+        [HttpGet("usuarios")]
+        public async Task<IActionResult> GetUsuarios()
+        {
+            try
+            {
+                var usuarios = await _db.Usuarios
+                    .OrderBy(u => u.Rol)
+                    .ThenBy(u => u.Nombre)
+                    .Select(u => new
+                    {
+                        u.Id,
+                        u.Nombre,
+                        u.Apellido,
+                        u.Email,
+                        u.Rol,
+                        u.Activo,
+                        u.FechaCreacion,
+                    })
+                    .ToListAsync();
+
+                return Ok(usuarios);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al obtener usuarios", error = ex.Message });
+            }
+        }
+    } }

@@ -1,6 +1,6 @@
 ﻿namespace Api_Eden.DTOs.AdopcionDto
 {
-    // ── Adopción ──────────────────────────────────────────────────────
+  
     public record RegistrarAdopcionDto(
         int AnimalId,
         string NombreAdoptante,

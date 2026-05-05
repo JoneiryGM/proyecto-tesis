@@ -109,6 +109,7 @@ builder.Services.AddScoped<IGastoService, GastoService>();
 builder.Services.AddScoped<IDashboardService,DashboardService>();
 builder.Services.AddScoped<IDonacionService,DonacionService>();
 builder.Services.AddScoped<IObjetivoService, ObjetivoService>();
+builder.Services.AddScoped<IMedicoService, MedicoService>();
 
 // 4. Base de Datos MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>

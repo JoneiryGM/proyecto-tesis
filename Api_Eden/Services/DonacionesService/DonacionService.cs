@@ -141,7 +141,6 @@ namespace Api_Eden.Services.DonacionService
             var donacion = await _db.Donaciones.FindAsync(id);
             if (donacion is null) return (false, "Donación no encontrada.");
 
-            // Revertir del objetivo si aplica
             if (donacion.ObjetivoId.HasValue && donacion.MontoDinero.HasValue)
             {
                 var objetivo = await _db.Objetivos.FindAsync(donacion.ObjetivoId.Value);
@@ -168,7 +167,7 @@ namespace Api_Eden.Services.DonacionService
 
         public async Task<IEnumerable<object>> GetDonantesAsync() =>
             await _db.Donantes
-                .Where(d => d.Activo == true) // Corregido de 'Activa' a 'Activo'
+                .Where(d => d.Activo == true) 
                 .OrderBy(d => d.Nombre)
                 .Select(d => new { d.Id, d.Nombre, d.Email, d.Telefono })
                 .ToListAsync();

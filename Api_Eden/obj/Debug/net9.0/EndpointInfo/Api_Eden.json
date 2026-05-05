@@ -463,6 +463,18 @@
         }
       }
     },
+    "/api/Auth/usuarios": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Dashboard": {
       "get": {
         "tags": [
@@ -1041,6 +1053,18 @@
         }
       }
     },
+    "/api/Medico/tratamientosall": {
+      "get": {
+        "tags": [
+          "Medico"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Medico/historial/{animalId}": {
       "get": {
         "tags": [
@@ -1222,18 +1246,6 @@
       }
     },
     "/api/Medico/veterinarios": {
-      "get": {
-        "tags": [
-          "Medico"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/Medico/tratamientosall": {
       "get": {
         "tags": [
           "Medico"

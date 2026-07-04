@@ -3,21 +3,22 @@ using Api_Eden.Services.TratamientoService.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Api_Eden.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-
     public class VacunaController : ControllerBase
     {
         private readonly IVacunaService _vacunaService;
-
 
         public VacunaController(IVacunaService vacunaService)
         {
             _vacunaService = vacunaService;
         }
+
+        [Authorize]
         [HttpGet("animal/{animalId}")]
         public async Task<IActionResult> GetVacunasPorAnimal(int animalId)
         {
@@ -29,17 +30,28 @@ namespace Api_Eden.Controllers
             return Ok(data);
         }
 
+        // CORRECCIÓN: se agrega [Authorize] para proteger el endpoint y se extrae
+        // el VeterinarioId del JWT (igual que FallecimientoController) en lugar de
+        // depender de que el cliente lo envíe en el body.
+        [Authorize(Roles = "Administrador,Veterinario")]
         [HttpPost]
         public async Task<IActionResult> RegistrarVacuna([FromBody] RegistrarVacunaDto dto)
         {
-            var (ok, mensaje, id) = await _vacunaService.RegistrarVacuna(dto);
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!int.TryParse(userIdClaim, out int userId))
+                return Unauthorized(new { mensaje = "No se pudo identificar al usuario." });
+
+            // Sobrescribir VeterinarioId con el usuario autenticado
+            var dtoCorregido = dto with { VeterinarioId = userId };
+
+            var (ok, mensaje, id) = await _vacunaService.RegistrarVacuna(dtoCorregido);
 
             if (!ok)
                 return BadRequest(new { mensaje });
 
             return Ok(new { mensaje, id });
         }
-    
+
         [Authorize]
         [HttpGet("todas")]
         public async Task<IActionResult> GetTodasLasVacunas([FromServices] Api_Eden.Data.AppDbContext db)
@@ -75,5 +87,6 @@ namespace Api_Eden.Controllers
             {
                 return StatusCode(500, new { mensaje = "Error al obtener vacunas", error = ex.Message });
             }
-        } }
+        }
     }
+}

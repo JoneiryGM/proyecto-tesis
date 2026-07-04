@@ -13,7 +13,7 @@ namespace Api_Eden.Controllers
 
         public AdopcionController(IAdopcionService adopcionService) => _adopcionService = adopcionService;
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador,Trabajador")]
         [HttpGet]
         public async Task<IActionResult> GetAdopciones()
         {
@@ -28,7 +28,7 @@ namespace Api_Eden.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador,Trabajador")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAdopcion(int id)
         {
@@ -46,6 +46,7 @@ namespace Api_Eden.Controllers
 
         
         [HttpPost]
+        [Authorize(Roles = "Administrador,Trabajador")]
         public async Task<IActionResult> RegistrarAdopcion([FromBody] RegistrarAdopcionDto dto)
         {
             try
@@ -60,8 +61,9 @@ namespace Api_Eden.Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador")]
+       
         [HttpPut("{id}/estado")]
+        [Authorize(Roles = "Administrador,Trabajador")]
         public async Task<IActionResult> ActualizarEstado(int id, [FromBody] ActualizarEstadoAdopcionDto dto)
         {
             try

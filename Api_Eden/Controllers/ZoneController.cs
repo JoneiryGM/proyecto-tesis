@@ -14,15 +14,17 @@ public class ZoneController : ControllerBase
 
     public ZoneController(ZoneService zoneService) => _zoneService = zoneService;
 
-    [Authorize]
+    
     [HttpGet]
+
+    [Authorize(Roles = "Administrador,Veterinario,Trabajador")]
     public async Task<ActionResult<IEnumerable<ZoneResponseDto>>> GetAll()
     {
         try { return Ok(await _zoneService.GetAllAsync()); }
         catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al obtener zonas", error = ex.Message }); }
     }
 
-    [Authorize]
+    [Authorize(Roles = "Administrador,Veterinario,Trabajador")]
     [HttpGet("{id}")]
     public async Task<ActionResult<ZoneResponseDto>> GetById(int id)
     {
@@ -32,10 +34,7 @@ public class ZoneController : ControllerBase
         catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al obtener zona", error = ex.Message }); }
     }
 
-    /// <summary>
-    /// Devuelve los animales que están actualmente en una zona específica
-    /// </summary>
-    [Authorize]
+    [Authorize(Roles = "Administrador,Veterinario,Trabajador")]
     [HttpGet("{id}/animales")]
     public async Task<ActionResult> GetAnimalesByZona(int id)
     {
@@ -44,10 +43,10 @@ public class ZoneController : ControllerBase
         catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al obtener animales de la zona", error = ex.Message }); }
     }
 
-    /// <summary>
+
     /// Devuelve el historial de movimientos de todas las zonas
-    /// </summary>
-    [Authorize]
+
+    [Authorize(Roles = "Administrador,Veterinario,Trabajador")]
     [HttpGet("movimientos")]
     public async Task<ActionResult> GetMovimientos()
     {
@@ -55,10 +54,10 @@ public class ZoneController : ControllerBase
         catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al obtener movimientos", error = ex.Message }); }
     }
 
-    /// <summary>
+   
     /// Devuelve el historial de movimientos de un animal específico
-    /// </summary>
-    [Authorize]
+    
+    [Authorize(Roles = "Administrador,Veterinario,Trabajador")]
     [HttpGet("movimientos/{animalId}")]
     public async Task<ActionResult> GetMovimientosByAnimal(int animalId)
     {
@@ -66,16 +65,14 @@ public class ZoneController : ControllerBase
         catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al obtener movimientos del animal", error = ex.Message }); }
     }
 
-    /// <summary>
-    /// Mueve un animal de su zona actual a una zona destino y registra el movimiento
-    /// </summary>
-    [Authorize(Roles = "Administrador,Veterinario")]
+
+    [Authorize(Roles = "Administrador,Veterinario,Trabajador")]
     [HttpPost("mover-animal")]
     public async Task<ActionResult> MoverAnimal([FromBody] MoverAnimalDto dto)
     {
         try
         {
-            // Obtener el ID del usuario autenticado desde el token JWT
+   
             var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
             if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int usuarioId))
                 return Unauthorized(new { mensaje = "No se pudo identificar al usuario" });
@@ -89,7 +86,7 @@ public class ZoneController : ControllerBase
         catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al mover el animal", error = ex.Message }); }
     }
 
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador,Trabajador,Veterinario")]
     [HttpPost]
     public async Task<ActionResult<ZoneResponseDto>> Create([FromBody] CreateZoneDto dto)
     {
@@ -102,7 +99,7 @@ public class ZoneController : ControllerBase
         catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al crear zona", error = ex.Message }); }
     }
 
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador,Trabajador,Veterinario")]
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] CreateZoneDto dto)
     {
@@ -116,7 +113,7 @@ public class ZoneController : ControllerBase
         catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al actualizar zona", error = ex.Message }); }
     }
 
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador,Trabajador,Veterinario")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

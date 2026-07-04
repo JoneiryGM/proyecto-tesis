@@ -8,6 +8,8 @@ using Api_Eden.Services.Dashboard.Interface;
 using Api_Eden.Services.DashboardService;
 using Api_Eden.Services.DonacionesService.Interface;
 using Api_Eden.Services.DonacionService;
+using Api_Eden.Services.EmailService;
+using Api_Eden.Services.EmailService.Interface;
 using Api_Eden.Services.GastosService;
 using Api_Eden.Services.GastosService.Interface;
 using Api_Eden.Services.ObjetivoService;
@@ -110,6 +112,7 @@ builder.Services.AddScoped<IDashboardService,DashboardService>();
 builder.Services.AddScoped<IDonacionService,DonacionService>();
 builder.Services.AddScoped<IObjetivoService, ObjetivoService>();
 builder.Services.AddScoped<IMedicoService, MedicoService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // 4. Base de Datos MySQL
 builder.Services.AddDbContext<AppDbContext>(options =>

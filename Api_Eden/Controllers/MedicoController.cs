@@ -1,5 +1,4 @@
-﻿
-using Api_Eden.DTOs.MedicoDto;
+﻿using Api_Eden.DTOs.MedicoDto;
 using Api_Eden.Services.TratamientoService.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +21,7 @@ namespace Api_Eden.Controllers
             _tratamientoService = tratamientoService;
         }
 
+        // ── Tratamientos globales (tab "Tratamientos" en Gestión Médica) ──────
         [Authorize]
         [HttpGet("tratamientos")]
         public async Task<IActionResult> GetTratamientos()
@@ -38,7 +38,8 @@ namespace Api_Eden.Controllers
             catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al obtener tratamientos", error = ex.Message }); }
         }
 
-        // FIX: devuelve [] en vez de 404 cuando no hay historial
+        // ── Historial por animal (solo consultas + tratamientos embebidos) ─────
+        // GET api/medico/historial/{animalId}
         [Authorize]
         [HttpGet("historial/{animalId}")]
         public async Task<IActionResult> GetHistorial(int animalId)
@@ -47,6 +48,54 @@ namespace Api_Eden.Controllers
             catch (Exception ex) { return StatusCode(500, new { mensaje = "Error al obtener historial", error = ex.Message }); }
         }
 
+        // ── NUEVO: Timeline unificada por animal ──────────────────────────────
+        // Devuelve una lista plana ordenada por fecha con tipo = consulta | vacuna | fallecimiento
+        // El frontend renderiza cada item según su "Tipo" para mostrar todo en un solo historial.
+        //
+        // Ejemplo de respuesta:
+        // [
+        //   { "tipo": "consulta",      "fecha": "2026-06-28", "titulo": "gripe", "tratamientos": [...] },
+        //   { "tipo": "vacuna",        "fecha": "2026-06-27", "titulo": "Moquillo", "vencida": false },
+        //   { "tipo": "consulta",      "fecha": "2026-06-25", "titulo": "dsasd",  "tratamientos": [...] },
+        //   { "tipo": "fallecimiento", "fecha": "2026-05-02", "titulo": "Paro cardíaco" }
+        // ]
+        //
+        // GET api/medico/historial/{animalId}/timeline
+        [Authorize]
+        [HttpGet("historial/{animalId}/timeline")]
+        public async Task<IActionResult> GetTimeline(int animalId)
+        {
+            try
+            {
+                var resultado = await _medicoService.GetTimelineAnimalAsync(animalId);
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al obtener timeline", error = ex.Message });
+            }
+        }
+
+        // ── Historial completo estructurado (consultas + vacunas + fallecimiento separados) ─
+        // GET api/medico/historial/{animalId}/completo
+        [Authorize]
+        [HttpGet("historial/{animalId}/completo")]
+        public async Task<IActionResult> GetHistorialCompleto(int animalId)
+        {
+            try
+            {
+                var resultado = await _medicoService.GetHistorialCompletoAnimalAsync(animalId);
+                if (resultado is null)
+                    return NotFound(new { mensaje = "Animal no encontrado." });
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al obtener historial completo", error = ex.Message });
+            }
+        }
+
+        // ── Registros ─────────────────────────────────────────────────────────
         [Authorize(Roles = "Administrador,Veterinario")]
         [HttpPost("historial")]
         public async Task<IActionResult> RegistrarHistorial([FromBody] RegistrarHistorialDto dto)
@@ -64,9 +113,16 @@ namespace Api_Eden.Controllers
         [HttpPost("tratamiento")]
         public async Task<IActionResult> RegistrarTratamiento([FromBody] RegistrarTratamientoDto dto)
         {
-            var (ok, mensaje, id) = await _tratamientoService.RegistrarTratamiento(dto);
-            if (!ok) return BadRequest(new { mensaje });
-            return Ok(new { mensaje, id });
+            try
+            {
+                var (ok, mensaje, id) = await _tratamientoService.RegistrarTratamiento(dto);
+                if (!ok) return BadRequest(new { mensaje });
+                return Ok(new { mensaje, id });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al registrar tratamiento", error = ex.Message });
+            }
         }
 
         [Authorize(Roles = "Administrador,Veterinario")]
@@ -83,6 +139,7 @@ namespace Api_Eden.Controllers
             return Ok(new { mensaje });
         }
 
+        // ── Catálogos ─────────────────────────────────────────────────────────
         [Authorize]
         [HttpGet("medicamentos")]
         public async Task<IActionResult> GetMedicamentos()

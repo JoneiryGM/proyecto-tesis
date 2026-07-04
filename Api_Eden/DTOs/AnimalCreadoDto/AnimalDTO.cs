@@ -6,13 +6,16 @@ namespace Api_Eden.DTOs.AnimalCreadoDto
     {
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
-        public string? Especie { get; set; }       // nombre de la especie
+        public string? Especie { get; set; }      
         public int? EspecieId { get; set; }
         public string? Raza { get; set; }
         public int? Edad { get; set; }
-        public string? FechaIngreso { get; set; }  // ISO string para el frontend
+        public string? UnidadEdad { get; set; } = "años";
+        public string? FechaNacimiento { get; set; }     
+        public bool? FechaNacimientoEstimada { get; set; }
+        public string? FechaIngreso { get; set; }  
         public string? Sexo { get; set; }
-        public string? ZonaActual { get; set; }    // nombre de la zona
+        public string? ZonaActual { get; set; }   
         public int? ZonaActualId { get; set; }
         public string? Color { get; set; }
         public string? FotografiaUrl { get; set; }
@@ -20,9 +23,9 @@ namespace Api_Eden.DTOs.AnimalCreadoDto
         public string? EstadoSalud { get; set; }
         public string? EstadoGeneral { get; set; }
     }
-      public record ActualizarEstadoAnimalDto(
-        string? EstadoGeneral,
-        string? EstadoSalud
-    );
+    public record ActualizarEstadoAnimalDto(
+      string? EstadoGeneral,
+      string? EstadoSalud
+  );
 }
 

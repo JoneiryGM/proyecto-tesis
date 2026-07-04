@@ -9,11 +9,9 @@ public class AnimalService
 {
     private readonly AppDbContext _context;
 
-    public AnimalService(AppDbContext context)
-    {
-        _context = context;
-    }
+    public AnimalService(AppDbContext context) => _context = context;
 
+    // ── Mapper ────────────────────────────────────────────────────────────────
     private static AnimalDTO MapToDto(Animale a) => new AnimalDTO
     {
         Id = a.Id,
@@ -22,6 +20,9 @@ public class AnimalService
         EspecieId = a.EspecieId,
         Raza = a.Raza,
         Edad = a.Edad,
+        UnidadEdad = a.UnidadEdad ?? "años",   // ← agregado
+        FechaNacimiento = a.FechaNacimiento?.ToString("yyyy-MM-dd"),
+        FechaNacimientoEstimada = a.FechaNacimientoEstimada,
         FechaIngreso = a.FechaIngreso.ToString("yyyy-MM-dd"),
         Sexo = a.Sexo,
         ZonaActual = a.ZonaActual?.Nombre,
@@ -33,6 +34,7 @@ public class AnimalService
         EstadoGeneral = a.EstadoGeneral,
     };
 
+    // ── GetAll ────────────────────────────────────────────────────────────────
     public async Task<IEnumerable<AnimalDTO>> GetAllAsync()
     {
         var animales = await _context.Animales
@@ -43,6 +45,7 @@ public class AnimalService
         return animales.Select(MapToDto);
     }
 
+    // ── GetById ───────────────────────────────────────────────────────────────
     public async Task<AnimalDTO?> GetByIdAsync(int id)
     {
         var animal = await _context.Animales
@@ -53,6 +56,7 @@ public class AnimalService
         return animal == null ? null : MapToDto(animal);
     }
 
+    // ── Create ────────────────────────────────────────────────────────────────
     public async Task<AnimalDTO> CreateAsync(CrearAnimalDto dto)
     {
         if (dto.ZonaActualId.HasValue)
@@ -70,6 +74,9 @@ public class AnimalService
             EspecieId = dto.EspecieId,
             Raza = dto.Raza,
             Edad = dto.Edad,
+            UnidadEdad = dto.UnidadEdad ?? "años",   // ← agregado
+            FechaNacimiento = dto.FechaNacimiento,
+            FechaNacimientoEstimada = dto.FechaNacimientoEstimada,
             Sexo = dto.Sexo,
             Color = dto.Color,
             FotografiaUrl = dto.FotografiaUrl,
@@ -78,7 +85,7 @@ public class AnimalService
             FechaIngreso = dto.FechaIngreso ?? DateOnly.FromDateTime(DateTime.Now),
             ZonaActualId = dto.ZonaActualId,
             FechaCreacion = DateTime.Now,
-            FechaUltimaModificacion = DateTime.Now
+            FechaUltimaModificacion = DateTime.Now,
         };
 
         _context.Animales.Add(nuevoAnimal);
@@ -87,6 +94,7 @@ public class AnimalService
         return (await GetByIdAsync(nuevoAnimal.Id))!;
     }
 
+    // ── Update ────────────────────────────────────────────────────────────────
     public async Task<bool> UpdateAsync(int id, CrearAnimalDto dto)
     {
         var animal = await _context.Animales.FindAsync(id);
@@ -102,6 +110,9 @@ public class AnimalService
         animal.EspecieId = dto.EspecieId;
         animal.Raza = dto.Raza;
         animal.Edad = dto.Edad;
+        animal.UnidadEdad = dto.UnidadEdad ?? "años";   // ← agregado
+        animal.FechaNacimiento = dto.FechaNacimiento;
+        animal.FechaNacimientoEstimada = dto.FechaNacimientoEstimada;
         animal.Sexo = dto.Sexo;
         animal.Color = dto.Color;
         animal.FotografiaUrl = dto.FotografiaUrl;
@@ -113,6 +124,7 @@ public class AnimalService
         return true;
     }
 
+    // ── Delete ────────────────────────────────────────────────────────────────
     public async Task<bool> DeleteAsync(int id)
     {
         var animal = await _context.Animales.FindAsync(id);
@@ -123,20 +135,26 @@ public class AnimalService
         return true;
     }
 
-    public async Task<bool> ActualizarEstadoAsync(
-        int id, string? estadoGeneral, string? estadoSalud)
+    // ── ActualizarEstado ──────────────────────────────────────────────────────
+    public async Task<bool> ActualizarEstadoAsync(int id, string? estadoGeneral, string? estadoSalud)
     {
         var animal = await _context.Animales.FindAsync(id);
         if (animal == null) return false;
 
-        if (!string.IsNullOrEmpty(estadoGeneral))
-            animal.EstadoGeneral = estadoGeneral;
-
-        if (!string.IsNullOrEmpty(estadoSalud))
-            animal.EstadoSalud = estadoSalud;
+        if (!string.IsNullOrEmpty(estadoGeneral)) animal.EstadoGeneral = estadoGeneral;
+        if (!string.IsNullOrEmpty(estadoSalud)) animal.EstadoSalud = estadoSalud;
 
         animal.FechaUltimaModificacion = DateTime.Now;
         await _context.SaveChangesAsync();
         return true;
+    }
+
+    // ── GetEspecies ───────────────────────────────────────────────────────────
+    public async Task<IEnumerable<object>> GetEspeciesAsync()
+    {
+        return await _context.Especies
+            .Select(e => new { e.Id, e.Nombre })
+            .OrderBy(e => e.Nombre)
+            .ToListAsync();
     }
 }

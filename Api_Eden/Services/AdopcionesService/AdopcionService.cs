@@ -11,7 +11,7 @@ namespace Api_Eden.Services.AdopcionesService
     public class AdopcionService : IAdopcionService
     {
         private readonly AppDbContext _db;
-        private readonly ILogger<AdopcionService> _logger; // Agregamos inyección de Logger
+        private readonly ILogger<AdopcionService> _logger; 
 
         public AdopcionService(AppDbContext db, ILogger<AdopcionService> logger)
         {
@@ -30,7 +30,7 @@ namespace Api_Eden.Services.AdopcionesService
                     .Select(a => new
                     {
                         a.Id,
-                        Animal = a.Animal != null ? a.Animal.Nombre : "Sin información", // Protección contra nulos
+                        Animal = a.Animal != null ? a.Animal.Nombre : "Sin información", 
                         a.NombreAdoptante,
                         a.TelefonoAdoptante,
                         a.EmailAdoptante,
@@ -47,7 +47,7 @@ namespace Api_Eden.Services.AdopcionesService
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al obtener la lista de adopciones.");
-                return new List<object>(); // O podrías devolver un objeto indicando el error dependiendo de cómo manejes las respuestas en tu Controller
+                return new List<object>(); 
             }
         }
 

@@ -21,7 +21,7 @@ namespace Api_Eden.Services.TratamientoService
 
             try
             {
-                // 🔍 VALIDAR ANIMAL
+                // VALIDAR ANIMAL
                 var animal = await _db.Animales.FindAsync(dto.AnimalId);
                 if (animal is null)
                     return (false, "Animal no encontrado.");
@@ -29,34 +29,34 @@ namespace Api_Eden.Services.TratamientoService
                 if (animal.EstadoGeneral == "Fallecido")
                     return (false, "El animal ya está registrado como fallecido.");
 
-                // 🔍 VALIDAR QUE NO EXISTA YA UN REGISTRO DE FALLECIMIENTO
+                // VALIDAR QUE NO EXISTA YA UN REGISTRO DE FALLECIMIENTO
                 var yaExiste = await _db.Fallecimientos
                     .AnyAsync(f => f.AnimalId == dto.AnimalId);
 
                 if (yaExiste)
                     return (false, "Este animal ya tiene un registro de fallecimiento.");
 
-                // 🔍 VALIDAR VETERINARIO
+                //  VALIDAR VETERINARIO
                 var veterinario = await _db.Usuarios.FindAsync(dto.VeterinarioId);
                 if (veterinario is null || (veterinario.Rol != "Veterinario" && veterinario.Rol != "Administrador"))
                     return (false, "El usuario no existe o no tiene permisos para registrar vacunas.");
 
-                // 🔍 VALIDAR USUARIO REGISTRO
+                // VALIDAR USUARIO REGISTRO
                 var usuario = await _db.Usuarios.FindAsync(dto.UsuarioRegistroId);
                 if (usuario is null)
                     return (false, "El usuario que registra no existe.");
 
-                // 🔍 VALIDAR FECHA
+                // VALIDAR FECHA
                 var hoy = DateOnly.FromDateTime(DateTime.Today);
 
                 if (dto.FechaFallecimiento > hoy)
                     return (false, "La fecha de fallecimiento no puede ser futura.");
 
-                // 🔍 VALIDAR CAMPOS OBLIGATORIOS
+                //  VALIDAR CAMPOS OBLIGATORIOS
                 if (string.IsNullOrWhiteSpace(dto.CausaFallecimiento))
                     return (false, "La causa de fallecimiento es obligatoria.");
 
-                // 🧠 CREAR REGISTRO
+                // CREAR REGISTRO
                 var fallecimiento = new Fallecimiento
                 {
                     AnimalId = dto.AnimalId,
@@ -70,7 +70,7 @@ namespace Api_Eden.Services.TratamientoService
 
                 _db.Fallecimientos.Add(fallecimiento);
 
-                // 🔥 LÓGICA DE NEGOCIO
+                // LÓGICA DE NEGOCIO
                 animal.EstadoGeneral = "Fallecido";
                 animal.EstadoSalud = null;
 

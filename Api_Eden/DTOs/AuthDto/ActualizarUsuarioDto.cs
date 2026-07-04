@@ -6,6 +6,7 @@
      string? Email,
      string? Password,
      string? Rol,
-     bool? Activo
+     bool? Activo,
+     string? FotoPerfilUrl
  );
 }

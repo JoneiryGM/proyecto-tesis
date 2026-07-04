@@ -138,5 +138,19 @@ namespace Api_Eden.Controllers
                 return StatusCode(500, new { mensaje = "Error al obtener gastos por categoría", error = ex.Message });
             }
         }
+        [Authorize(Roles = "Administrador")]
+        [HttpGet("resumen/serie-mensual")]
+        public async Task<IActionResult> GetSerieMensual([FromQuery] int? year)
+        {
+            try
+            {
+                var serie = await _gastoService.GetSerieMensual(year);
+                return Ok(serie);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Error al obtener la serie mensual", error = ex.Message });
+            }
+        }
     }
 }

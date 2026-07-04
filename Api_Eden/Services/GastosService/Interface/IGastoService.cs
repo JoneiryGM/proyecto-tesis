@@ -12,5 +12,6 @@ namespace Api_Eden.Services.GastosService.Interface
         Task<(bool ok, string mensaje)> EliminarGasto(int id);
         Task<object> GetResumenMensual();
         Task<object> GetGastosPorCategoria(int year, int mes);
+        Task<object> GetSerieMensual(int? year);
     }
 }

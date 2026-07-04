@@ -104,7 +104,7 @@ namespace Api_Eden.Services.ObjetivoService
             await _db.SaveChangesAsync();
             return (true, "Objetivo eliminado correctamente.");
         }
-        /// Parsea una fecha de forma segura — devuelve null si el valor es inválido o vacío
+      
         private static DateOnly? TryParseDate(string? value)
         {
             if (string.IsNullOrWhiteSpace(value)) return null;

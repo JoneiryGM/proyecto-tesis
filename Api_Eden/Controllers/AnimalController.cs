@@ -22,7 +22,7 @@ public class AnimalController : ControllerBase
 
     // GET: api/animal
     [HttpGet]
-    [Authorize(Roles = "Administrador,Veterinario")]
+    [Authorize(Roles = "Administrador,Veterinario,Trabajador")]
     public async Task<ActionResult<IEnumerable<AnimalDTO>>> GetAnimales()
     {
         try
@@ -55,7 +55,7 @@ public class AnimalController : ControllerBase
 
     // POST: api/animal
     [HttpPost]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador,Veterinario,Trabajador")]
     public async Task<ActionResult<AnimalDTO>> PostAnimal([FromBody] CrearAnimalDto dto)
     {
         try
@@ -75,7 +75,7 @@ public class AnimalController : ControllerBase
 
     // PUT: api/animal/{id}
     [HttpPut("{id}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador,Veterinario,Trabajador")]
     public async Task<ActionResult> PutAnimal(int id, [FromBody] CrearAnimalDto dto)
     {
         try
@@ -129,6 +129,22 @@ public class AnimalController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(500, new { mensaje = "Error al actualizar estado", error = ex.Message });
+        }
+    }
+
+    // GET: api/animal/especie
+    [HttpGet("especie")]
+    [Authorize(Roles = "Administrador,Veterinario,Trabajador")]
+    public async Task<IActionResult> GetEspecies()
+    {
+        try
+        {
+            var especies = await _animalService.GetEspeciesAsync();
+            return Ok(especies);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { mensaje = "Error al obtener especies", error = ex.Message });
         }
     }
 }

@@ -220,6 +220,27 @@ namespace Api_Eden.Services.GastosService
                 gastosPorCategoria
             };
         }
+        public async Task<object> GetSerieMensual(int? year)
+        {
+            var query = _db.Gastos.AsQueryable();
+
+            if (year.HasValue)
+                query = query.Where(g => g.FechaGasto.Year == year.Value);
+
+            var serie = await query
+                .GroupBy(g => new { g.FechaGasto.Year, g.FechaGasto.Month })
+                .Select(grp => new
+                {
+                    anio = grp.Key.Year,
+                    mes = grp.Key.Month,
+                    total = grp.Sum(x => x.Monto)
+                })
+                .OrderBy(x => x.anio)
+                .ThenBy(x => x.mes)
+                .ToListAsync();
+
+            return serie;
+        }
 
         public async Task<object> GetGastosPorCategoria(int year, int mes)
         {

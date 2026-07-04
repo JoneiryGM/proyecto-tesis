@@ -14,8 +14,14 @@ namespace Api_Eden.DTOs.AnimalCreadoDto
         [StringLength(100)]
         public string? Raza { get; set; }
 
-        [Range(0, 30, ErrorMessage = "La edad debe estar entre 0 y 30")]
+        [Range(0, 999, ErrorMessage = "La edad debe estar entre 0 y 999")]
         public int? Edad { get; set; }
+
+        public string UnidadEdad { get; set; } = "años";
+
+        public DateOnly? FechaNacimiento { get; set; }
+
+        public bool? FechaNacimientoEstimada { get; set; }
 
         public DateOnly? FechaIngreso { get; set; }
 

@@ -1,0 +1,17 @@
+# Carpetas de compilación e intermedias
+[Bb]in/
+[Oo]bj/
+
+# Archivos de configuración del usuario y entorno de VS/VS Code
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.sln.docstates
+
+# Reportes de cobertura de código y pruebas
+TestResults/
+
+# Archivos pesados o temporales del sistema
+.DS_Store
+Thumbs.db
